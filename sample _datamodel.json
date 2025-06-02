@@ -4,17 +4,13 @@
 	"tables": [
 		{
 			"name": "A",
-			"guid": null,
 			"columns": [
 				{
 					"name": "a1",
 					"type": "int",
 					"length": null,
 					"primary_key": "T",
-					"notes": "this is a primary key",
-					"guid": null,
-					"colid": null
-					
+					"notes": "this is a primary key"
 				},
 				{
 					"name": "a2",
@@ -24,16 +20,13 @@
 		},
 		{
 			"name": "B",
-			"guid": null,
 			"columns": [
 				{
 					"name": "b1",
 					"type": "int",
 					"length": null,
 					"not_null": "T",
-					"guid": null,
-					"notes": "this is a foreign key",
-					"colid": null
+					"notes": "this is a foreign key"
 				},
 				{
 					"name": "b2",
