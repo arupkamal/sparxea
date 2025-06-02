@@ -2,7 +2,7 @@
 !INC Import Model.JavaScript-Helper Functions
 
 /*
- * Script Name: Roche Data Model Functions Library
+ * Script Name: Data Model Functions Library
  * Author: Arup Kamal
  * Purpose: To be used with other scripts
  * Date: 2025-05-31
