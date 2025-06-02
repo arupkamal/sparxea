@@ -1,0 +1,46 @@
+{
+	"database": "Athena",
+	"model_name": "Test Model",
+	"tables": [
+		{
+			"name": "A",
+			"guid": null,
+			"columns": [
+				{
+					"name": "a1",
+					"type": "int",
+					"length": null,
+					"primary_key": "T",
+					"notes": "this is a primary key",
+					"guid": null,
+					"colid": null
+					
+				},
+				{
+					"name": "a2",
+					"type": "String"
+				}
+			]
+		},
+		{
+			"name": "B",
+			"guid": null,
+			"columns": [
+				{
+					"name": "b1",
+					"type": "int",
+					"length": null,
+					"not_null": "T",
+					"guid": null,
+					"notes": "this is a foreign key",
+					"colid": null
+				},
+				{
+					"name": "b2",
+					"type": "String"
+				}
+			]
+		}
+	],
+	"foreign_keys":[{"foreign_key": "B.b1", "references":"A.a1"}]
+}
