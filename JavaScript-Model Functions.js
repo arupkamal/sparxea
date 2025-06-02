@@ -2,7 +2,7 @@
 !INC Import Model.JavaScript-Helper Functions
 
 /*
- * Script Name: Data Model Functions Library
+ * Script Name: Roche Data Model Functions Library
  * Author: Arup Kamal
  * Purpose: To be used with other scripts
  * Date: 2025-05-31
@@ -175,42 +175,42 @@ function addColumns(table, columns){
 //*****************************************************************
 // Adds a Foreign Key to a Table
 //*****************************************************************
-function addForeignKey(keyPackage, pk_colid, fk_colid){
+function addForeignKey(keyPackage, foreign_key){
 	
-		toElmAtr   = pk_colid.split(".")
-		fromElmAtr = fk_colid.split(".")
+	fkElmAtr  = foreign_key['foreign_key'].split(".")
+	refElmAtr = foreign_key['references'].split(".")
 	
-		if (toElmAtr.length!=2 || fromElmAtr.length!=2){
-			MsgBox("pk_colid and fk_colid must follow TableName.ColumnName format!")
-			return -1
-		}
+	if (refElmAtr.length!=2 || fkElmAtr.length!=2){
+		MsgBox("[foreign_key] and [references] values must follow TableName.ColumnName format!")
+		return -1
+	}
 			
-		//fromElement = GetElementByID(myTables[fromElmAtr[0]])
-		//toElement   = GetElementByID(myTables[toElmAtr[0]])
+		//fromElement = GetElementByID(myTables[ fkElmAtr[0]])
+		//toElement   = GetElementByID(myTables[refElmAtr[0]])
 		
-		fromElement = SearchElement(keyPackage, fromElmAtr[0])
-		toElement   = SearchElement(keyPackage,   toElmAtr[0])
+		fkElement  = SearchElement(keyPackage,  fkElmAtr[0])
+		refElement = SearchElement(keyPackage, refElmAtr[0])
 		
-		fromAttributeName = fromElmAtr[1]
+		fkAttributeName  = fkElmAtr[1]
+		refAttributeName = refElmAtr[1]
 		order = 1
-		toAttributeName = toElmAtr[1]
-		
+	
 		var type = "FK"
-		var name = type + "_" + fromElement.Name+"."+fromAttributeName+"_"+toElement.Name+"."+toAttributeName
+		var name = type + "_" + fkElement.Name+"."+fkAttributeName+"_"+refElement.Name+"."+refAttributeName
 
-		foreignKey = fromElement.Methods.AddNew(name,type)
+		foreignKey = fkElement.Methods.AddNew(name,type)
 		foreignKey.Stereotype = type
 		foreignKey.Update()
 			
-		var connector = fromElement.Connectors.AddNew(name,"Association");
-		connector.SupplierID = toElement.ElementID
+		var connector = fkElement.Connectors.AddNew(name,"Association");
+		connector.SupplierID = refElement.ElementID
 		connector.Update()
 		
 		connector.Direction = "Source -> Destination"
 		connector.Stereotype = "EAUML::FK"
 		connector.MetaType = "ForeignKey"
 		connector.SequenceNo = order
-		connector.StyleEx = "FKINFO=SRC=" + name + ":DST=PK_" + toElement.Name + ":"
+		connector.StyleEx = "FKINFO=SRC=" + name + ":DST=PK_" + refElement.Name + ":"
 		connector.ClientEnd.Aggregation = 0
 		connector.ClientEnd.AllowDuplicates = false
 		connector.ClientEnd.Cardinality = "0..*"
@@ -220,12 +220,12 @@ function addForeignKey(keyPackage, pk_colid, fk_colid){
 		connector.SupplierEnd.AllowDuplicates = false
 		connector.SupplierEnd.Cardinality = "1"
 		connector.SupplierEnd.Derived = false
-		connector.SupplierEnd.Role = "PK_" + toElement.Name
+		connector.SupplierEnd.Role = "PK_" + refElement.Name
 		connector.Update()			
 			
-		var attribute = GetAttributeByID(myColumns[fk_colid])
-		//var attribute = SearchAttribute(fromElement, fromAttributeName)
-		var parameter = foreignKey.Parameters.AddNew(fromAttributeName,attribute.Type)
+		var attribute = GetAttributeByID(myColumns[ foreign_key['foreign_key'] ])
+		//var attribute = SearchAttribute(fkElement, fkAttributeName)
+		var parameter = foreignKey.Parameters.AddNew(fkAttributeName,attribute.Type)
 		parameter.Position = 1
 		parameter.Update()
 		
@@ -263,11 +263,11 @@ function CreateDiagram(parentPackage, name, type, metaType, StyleEx, ExtendedSty
 //*****************************************************************
 function CreateDataModelDiagram(parentPackage, name) {
     var diagram = CreateDiagram(parentPackage
-								, name
-								, "Data Modeling"
-								, "Extended::Data Modeling"
-								, "ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=Information Engineering;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=1;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=E36D8386;"
-								, "HideRel=0;ShowTags=0;ShowReqs=0;ShowCons=0;OpParams=1;ShowSN=0;ScalePI=0;PPgs.cx=0;PPgs.cy=0;PSize=9;ShowIcons=1;SuppCN=0;HideProps=0;HideParents=0;UseAlias=0;HideAtts=0;HideOps=1;HideStereo=0;HideEStereo=0;ShowRec=0;ShowRes=0;ShowShape=1;FormName=;"
-								)
+	, name
+	, "Data Modeling"
+	, "Extended::Data Modeling"
+	, "ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=Information Engineering;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=1;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=E36D8386;"
+	, "HideRel=0;ShowTags=0;ShowReqs=0;ShowCons=0;OpParams=1;ShowSN=0;ScalePI=0;PPgs.cx=0;PPgs.cy=0;PSize=9;ShowIcons=1;SuppCN=0;HideProps=0;HideParents=0;UseAlias=0;HideAtts=0;HideOps=1;HideStereo=0;HideEStereo=0;ShowRec=0;ShowRes=0;ShowShape=1;FormName=;"
+	)
     return diagram
 }
